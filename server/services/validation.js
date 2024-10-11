@@ -35,7 +35,12 @@ module.exports = ({ strapi }) => ({
 
   async validateAvailability(uid, name, value, id = null, locale = undefined) {
     const model = strapi.db.metadata.get(uid);
-    const isLocalized = model.pluginOptions.i18n.localized || false;
+
+    const { pluginOptions } = model;
+
+    const { i18n } = pluginOptions;
+
+    const isLocalized = (i18n && i18n.localized) || false;
 
     const where = { [name]: value };
     // If `id` is not null, omit it from the results so we aren't comparing against itself.
